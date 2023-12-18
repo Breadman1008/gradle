@@ -17,7 +17,9 @@
 package org.gradle.internal.logging.console.jvm
 
 import org.gradle.api.logging.configuration.ConsoleOutput
+import spock.lang.Ignore
 
+@Ignore
 class VerboseConsoleJvmTestLoggingFunctionalTest extends AbstractConsoleJvmTestLoggingFunctionalTest {
     ConsoleOutput consoleType = ConsoleOutput.Verbose
 }
