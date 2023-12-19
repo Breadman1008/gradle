@@ -124,7 +124,7 @@ trait ToolingApiSpec {
     ) {
         addModelImplementation("buildSrc")
         addModelBuilderImplementation("buildSrc", myModelBuilderImplementation)
-        addPluginImplementation("buildSrc", pluginImplementation)
+        addBuilderRegisteringPluginImplementation("buildSrc", "MyModelBuilder", pluginImplementation)
         addPluginBuildScript("buildSrc")
     }
 
