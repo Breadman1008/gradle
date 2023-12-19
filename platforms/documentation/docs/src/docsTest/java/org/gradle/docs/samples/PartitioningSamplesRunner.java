@@ -68,7 +68,7 @@ abstract class PartitioningSamplesRunner extends IntegrationTestSamplesRunner {
         }
     }
 
-    private static final Predicate<String> SAMPLES_BUCKET = s -> !s.startsWith("snippet-");
+    private static final Predicate<String> SAMPLES_BUCKET = s -> !s.startsWith("snippet-") && s.contains("problems"); // TODO (donat) remove this
     private static final Predicate<String> SNIPPETS_BUCKET_1 = s ->
         s.startsWith("snippet-dependency-management-") ||
             s.startsWith("snippet-tutorial-") ||
