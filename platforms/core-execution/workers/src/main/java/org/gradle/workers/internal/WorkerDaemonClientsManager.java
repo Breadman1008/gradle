@@ -157,7 +157,7 @@ public class WorkerDaemonClientsManager implements Stoppable {
     private void stopWorkers(List<WorkerDaemonClient> clientsToStop) {
         if (clientsToStop.size() > 0) {
             int clientCount = clientsToStop.size();
-            LOGGER.debug("Stopping {} worker daemon(s).", clientCount);
+            LOGGER.warn("Stopping {} worker daemon(s).", clientCount);
             List<Exception> failures = Lists.newArrayList();
             for (WorkerDaemonClient client : clientsToStop) {
                 try {

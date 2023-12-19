@@ -43,7 +43,7 @@ public class WorkerDaemonExpiration implements MemoryHolder {
         if (memoryAmountBytes < 0) {
             throw new IllegalArgumentException("Negative memory amount");
         }
-        LOGGER.debug("Will attempt to release {} of memory", memoryAmountBytes / 1024 / 1024);
+        LOGGER.warn("Will attempt to release {} of memory", memoryAmountBytes / 1024 / 1024);
         SimpleMemoryExpirationSelector selector = new SimpleMemoryExpirationSelector(memoryAmountBytes);
         clientsManager.selectIdleClientsToStop(selector);
         return selector.getReleasedBytes();
@@ -73,11 +73,13 @@ public class WorkerDaemonExpiration implements MemoryHolder {
             int notExpirable = 0;
             List<WorkerDaemonClient> toExpire = new ArrayList<>();
             for (WorkerDaemonClient idleClient : idleClients) {
+                LOGGER.warn("Evaluating {} for expiration", idleClient.toString());
                 if (idleClient.isNotExpirable()) {
                     notExpirable++;
                     continue;
                 }
                 toExpire.add(idleClient);
+                LOGGER.warn("Expiring {}", idleClient);
                 long freed = getMemoryUsage(idleClient);
                 releasedBytes += freed;
                 if (releasedBytes >= memoryBytesToRelease) {
@@ -86,10 +88,10 @@ public class WorkerDaemonExpiration implements MemoryHolder {
             }
             if (LOGGER.isDebugEnabled() && !toExpire.isEmpty()) {
                 // TODO Only log expired workers count, log their "identity" once they are nameable/describable
-                LOGGER.debug("Worker Daemon(s) expired to free some system memory {}", toExpire.size());
+                LOGGER.warn("Worker Daemon(s) expired to free some system memory {}", toExpire.size());
             }
             if (notExpirable > 0) {
-                LOGGER.debug("{} Worker Daemon(s) had expiration disabled and were skipped", notExpirable);
+                LOGGER.warn("{} Worker Daemon(s) had expiration disabled and were skipped", notExpirable);
             }
             return toExpire;
         }
